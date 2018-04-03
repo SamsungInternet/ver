@@ -16,7 +16,7 @@ oReq.send();
 function createImages(cant){
     let img_urls = [cant];
     for(i = 0; i < cant; i++){
-        let picUrl = picNum => `https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }.jpg;`;
+        let picUrl = picNum => `https://img.gs/khtbpxltql/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
         let img = document.createElement('a-image');
         img.setAttribute('src', picUrl(i));
         document.querySelector('a-scene').appendChild(img);
