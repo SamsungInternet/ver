@@ -6,6 +6,7 @@ let img_h = 3.5;
 let spacer = 0.3;
 const num_imgs = 50;
 let circ_rad = 7;
+const trans_lapse = 500;
 
 document.addEventListener('DOMContentLoaded', function() {    
     //creates the layout entity once the scene is loaded
@@ -56,8 +57,12 @@ function setCircleLayout(r){
     let imgs = document.getElementById('layout_container').children;
     let ang = 360/num_imgs;
     for(i = 0; i < num_imgs; i++){
-        imgs[i].object3D.rotateY(toRadians(180-(90-ang * -i)));
-        imgs[i].object3D.position.set(circ_rad * Math.cos(toRadians(ang * i)), 2, circ_rad * Math.sin(toRadians(ang * i)));
+        //rotation: imgs[i].object3D.rotateY(toRadians(180-(90-ang * -i)));
+        let tween_rot = new AFRAME.TWEEN.Tween(imgs[i].object3D.rotation).to({y:toRadians(180-(90-ang * -i))}, trans_lapse);
+        tween_rot.start();
+        //position: imgs[i].object3D.position.set(circ_rad * Math.cos(toRadians(ang * i)), 2, circ_rad * Math.sin(toRadians(ang * i)));
+        let tween_pos = new AFRAME.TWEEN.Tween(imgs[i].object3D.position).to({x:(circ_rad * Math.cos(toRadians(ang * i))), y: 2, z:(circ_rad * Math.sin(toRadians(ang * i)))}, trans_lapse);
+        tween_pos.start();
     }
 }
 
@@ -65,13 +70,14 @@ function setGridLayout(pc){
     let imgs = document.getElementById('layout_container').children;
     let f =0, c = 0;
     for(i = 0; i < num_imgs; i++){
-        imgs[i].object3D.position.set(c * img_w + spacer, f * img_h, -6);
+        //position: imgs[i].object3D.position.set(c * img_w + spacer, f * img_h, -6);
+        let tween_pos = new AFRAME.TWEEN.Tween(imgs[i].object3D.position).to({x:(c * img_w + spacer), y: (f * img_h), z:-6}, trans_lapse);
+        tween_pos.start();
         imgs[i].object3D.rotation.set(0, 0, 0);
         c++;
         if (c == pc){
             c=0;
             f++;
-            console.log(f);
         }
     }
 }
