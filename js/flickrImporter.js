@@ -7,7 +7,7 @@ let spacer = 0.3;
 const num_imgs = 50;
 let circ_rad = 4;
 const trans_lapse = 500;
-const dur_vuelta = 840000;
+const dur_vuelta = 780000;
 document.addEventListener('DOMContentLoaded', function() {    
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function init(){
     let oReq = new XMLHttpRequest();
     oReq.addEventListener('load', reqListener);
+    oReq.addEventListener("error", transferFailed);
     oReq.open('GET', flickr_url);
     oReq.send();
-
 }
 
 /* flickr image setup */
@@ -36,6 +36,19 @@ function reqListener(){
     layout.object3D.rotateY(toRadians(180));
     createUI();
 }
+
+function transferFailed(evt) {
+    let err_img = document.createElement('a-image');
+    err_img.setAttribute('src', '#err_img');
+    err_img.setAttribute('transparent', 'true');
+    err_img.setAttribute('height', 2);
+    err_img.setAttribute('width', 2);
+    err_img.setAttribute('position', '0 1.5 -3');
+    document.querySelector('a-scene').appendChild(err_img);
+
+    console.log('Unable to get the pictures :( - sad panda');
+  }
+  
 
 function createImages(cant){
     for(i = 0; i < cant; i++){
