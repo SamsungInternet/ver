@@ -7,7 +7,7 @@ let spacer = 0.3;
 const num_imgs = 50;
 let circ_rad = 4;
 const trans_lapse = 500;
-const dur_vuelta = 780000;
+const dur_vuelta = 720000;
 document.addEventListener('DOMContentLoaded', function() {    
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
