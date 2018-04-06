@@ -46,7 +46,7 @@ function transferFailed(evt) {
     err_img.setAttribute('position', '0 1.5 -3');
     document.querySelector('a-scene').appendChild(err_img);
 
-    console.log('Unable to get the pictures :( - sad panda');
+    console.log('Unable to get the pictures :( -> sad panda');
   }
   
 
@@ -71,11 +71,11 @@ function createUI(){
     bg_pnl.setAttribute('src', '#bg_menu');
     bg_pnl.setAttribute('transparent', 'true');
     bg_pnl.setAttribute('height', 4);
-    bg_pnl.setAttribute('width', 2.2);
+    bg_pnl.setAttribute('width', 2);
     bg_pnl.setAttribute('position', '0 1.5 -3');
 
     let ins = document.createElement('a-image');
-    ins.setAttribute('src', '#ins_gear');
+    ins.setAttribute('src', '#ins');
     ins.setAttribute('transparent', 'true');
     ins.setAttribute('height', 1.5);
     ins.setAttribute('width', 1.5);
