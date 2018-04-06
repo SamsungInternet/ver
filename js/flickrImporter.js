@@ -65,7 +65,7 @@ function createImages(cant){
 /* UI setup */
 function createUI(){
     let init_ui = document.createElement('a-entity');
-    init_ui.setAttribute('id', 'main_menu');
+    init_ui.setAttribute('id', 'splash');
     
     let bg_pnl = document.createElement('a-image');
     bg_pnl.setAttribute('src', '#bg_menu');
@@ -88,12 +88,36 @@ function createUI(){
     rotateLayout();
 } 
 
+function moveTo(obj, pos, time){
+    //position: obj.object3D.position.set(pos.x, pos.y, pos.z);
+    let tween_pos = new AFRAME.TWEEN.Tween(obj.object3D.position).to({x:pos.x, y:pos.y, z:pos.z}, time);
+    tween_pos.easing(TWEEN.Easing.Exponential.Out);
+    tween_pos.start();
+}
+
+function scaleTo(obj, scl, time){
+    let tween_scl = new AFRAME.TWEEN.Tween(obj.object3D.scale).to({x:scl.x, y:scl.y, z:scl.z}, time);
+    tween_scl.easing(TWEEN.Easing.Exponential.Out);
+    tween_scl.start();
+}
+
 function rotateLayout(){
     let layout = document.getElementById('layout_container');
-    
     let tween_rot = new AFRAME.TWEEN.Tween(layout.object3D.rotation).to({y:toRadians(359)}, dur_vuelta);
     tween_rot.repeat(Infinity);
     tween_rot.start();
+}
+
+function goToBrowse(){
+    let layout = document.querySelector('#layout_container');
+    moveTo(layout, {x:0, y:0, z:32.1}, 2000);
+}
+
+function goToOverview(){
+    setCircleLayout(35);
+    let splash = document.querySelector('#splash');
+    moveTo(splash, {x:0, y:0, z:0}, 1000);
+    scaleTo(splash, {x:0.001, y:0.001, z:0.001}, 3000);
 }
 
 /* image layouts */
