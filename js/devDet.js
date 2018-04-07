@@ -13,16 +13,16 @@ let deviceDetection = function(){
 
           if(AFRAME.utils.device.isGearVR()){
             //addGearVRControl();
-            addLaserControls();
+            addLaserControls('');
           }
           else if(displays[0].displayName.indexOf('Windows Mixed Reality') != -1){ 
             //addWindowsMixedRealityControllers();
-            addLaserControls();
+            addLaserControls('');
           }
           else if(displays[0].displayName.indexOf('Oculus') != -1)
           {
             //addOculusTouch();
-            addLaserControls();
+            addLaserControls('');
           }
           console.log('added tracked controls');
         }
@@ -33,7 +33,7 @@ let deviceDetection = function(){
       });
     }
     else{ // spec not implemented
-      createCursor();
+      createCursor('');
     }
     return dev;
 }
@@ -57,7 +57,7 @@ let createCursor = function(filter){
 let addLaserControls = function(filter){
   let t_laserCtrls_L = document.createElement('a-entity');
   t_laserCtrls_L.setAttribute('laser-controls', 'hand:left');
-  t_laserCtrls_L.setAttribute('raycaster', 'objects:.telesphere');
+  t_laserCtrls_L.setAttribute('raycaster', filter);
   t_laserCtrls_L.setAttribute('collider-check', '');
   document.querySelector('a-scene').appendChild(t_laserCtrls_L);
   let t_laserCtrls_R = document.createElement('a-entity');
