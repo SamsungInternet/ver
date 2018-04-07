@@ -3,6 +3,7 @@ let devDet_scene = null;
 let deviceDetection = function(){
 
   devDet_scene = document.querySelector('a-scene');
+  let dev = -1;
   if(navigator.getVRDisplays) { // is webvr supported?
       console.log('WebXR supported');
       // Then get the displays attached to the computer
@@ -33,8 +34,8 @@ let deviceDetection = function(){
     }
     else{ // spec not implemented
       createCursor();
-      
     }
+    return dev;
 }
 
 //Creates the cursor. Overrides the default camera.
@@ -53,7 +54,7 @@ let createCursor = function(filter){
   console.log('added cursor');
 }
 
-let addLaserControls = function(){
+let addLaserControls = function(filter){
   let t_laserCtrls_L = document.createElement('a-entity');
   t_laserCtrls_L.setAttribute('laser-controls', 'hand:left');
   t_laserCtrls_L.setAttribute('raycaster', 'objects:.telesphere');
@@ -61,11 +62,12 @@ let addLaserControls = function(){
   document.querySelector('a-scene').appendChild(t_laserCtrls_L);
   let t_laserCtrls_R = document.createElement('a-entity');
   t_laserCtrls_R.setAttribute('laser-controls', 'hand:right');
-  t_laserCtrls_R.setAttribute('raycaster', 'objects:.telesphere');
+  t_laserCtrls_R.setAttribute('raycaster', filter);
   t_laserCtrls_R.setAttribute('collider-check', '');
   document.querySelector('a-scene').appendChild(t_laserCtrls_R);
 }
 
+/*
 let addOculusTouch = function(){
   let t_touchCtrls_L = document.createElement('a-entity');
   t_touchCtrls_L.setAttribute('oculus-touch-controls', 'hand:left');
@@ -73,7 +75,7 @@ let addOculusTouch = function(){
   let t_touchCtrls_R = document.createElement('a-entity');
   t_touchCtrls_R.setAttribute('oculus-touch-controls', 'hand:right');
   document.querySelector('a-scene').appendChild(t_touchCtrls_R);
-}
+}*/
 
 let addGearVRControl = function(){
   let t_gearvrCtrl = document.createElement('a-entity');
@@ -81,6 +83,7 @@ let addGearVRControl = function(){
   document.querySelector('a-scene').appendChild(t_gearvrCtrl);
 }
 
+/*
 let addWindowsMixedRealityControllers = function(){
   let t_WMRCtrls_L = document.createElement('a-entity');
   t_WMRCtrls_L.setAttribute('windows-motion-controls', 'hand:left');
@@ -88,6 +91,6 @@ let addWindowsMixedRealityControllers = function(){
   let t_WMRCtrls_R = document.createElement('a-entity');
   t_WMRCtrls_R.setAttribute('windows-motion-controls', 'hand:right');
   document.querySelector('a-scene').appendChild(t_WMRCtrls_R);
-}
+}*/
 
 
