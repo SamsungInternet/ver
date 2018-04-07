@@ -27,7 +27,7 @@ let deviceDetection = function(){
         }
         else{ // no headset connected
           console.log('no headset available');
-          createCursor();
+          createCursor('');
         }
       });
     }
@@ -38,7 +38,7 @@ let deviceDetection = function(){
 }
 
 //Creates the cursor. Overrides the default camera.
-let createCursor = function(){
+let createCursor = function(filter){
   //creates camera
   let t_cam = document.querySelector('[camera]')
   //creates and attadches cursor 
@@ -47,7 +47,7 @@ let createCursor = function(){
   t_cursor.setAttribute('position', '0 0 -1');
   t_cursor.setAttribute('geometry', 'primitive: ring; radiusInner: 0.02; radiusOuter: 0.03');
   t_cursor.setAttribute('material', 'color: black; shader: flat');
-  t_cursor.setAttribute('raycaster', 'objects:.telesphere');
+  t_cursor.setAttribute('raycaster', filter);
 
   t_cam.appendChild(t_cursor);
   console.log('added cursor');
