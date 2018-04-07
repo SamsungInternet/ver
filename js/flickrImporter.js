@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
         createImageLayout();
-        deviceDetection();
+        //deviceDetection();
     });
     init();
 });
@@ -81,7 +81,8 @@ function createUI(){
     ins.setAttribute('height', 1.5);
     ins.setAttribute('width', 1.5);
     ins.setAttribute('position', '0 1.2 -2.8');
-    ins.addEventListener('click', goToOverview);
+    ins.setAttribute('class', 'collidable');
+    ins.setAttribute('onClick', 'goToOverview()');
 
     init_ui.appendChild(bg_pnl);
     init_ui.appendChild(ins);
