@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/style.css" rel="stylesheet">
+        <script src="js/utils.js"></script>
         <script src="js/flickrImporter.js"></script>
         <script src="js/devDet.js"></script>
         <script src="js/e/aframe.min.js"></script>
@@ -13,14 +14,19 @@
         <a-scene debug="true">
             <a-assets>
                 <img id="bg_menu" src="imgs/pnl_main_menu.png">
+                <img id="bg_pnl" src="imgs/bg_pnl.png">
                 <img id="err_img" src="imgs/error.png">
-                <img id="ins" src="imgs/ins_wmr.png">
+                <img id="ins" src="imgs/ins_oculus.png">
                 <img id="bg" src="imgs/bg.jpg">
                 <img id="cred" src="imgs/credits.png">
+                <img id="trend" src="imgs/trend.png">
+                <img id="search" src="imgs/search.png">
+                <img id="prev" src="imgs/prev.png">
+                <img id="next" src="imgs/next.png">
             </a-assets>
             <a-sky src="#bg"></a-sky>
             <a-entity camera look-controls position="0 1.8 0">
-                <a-entity cursor="fuse: false"; position="0 0 -1" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03" raycaster="objects: .collidable" material="color: black; shader: flat"></a-entity>
+                <a-entity cursor="fuse: false"; position="0 0 -1" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03" raycaster="objects: .collidable" material="color: #083A7A; opacity:0.6; shader: flat"></a-entity>
             </a-entity>
             <a-image src="#cred" position="0 -5.5 0" width="3.5" height="3.5" rotation="-90 0 0"></a-image>
         </a-scene>
