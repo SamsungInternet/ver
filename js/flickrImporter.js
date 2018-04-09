@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
         createUI();
+        deviceDetection();
     });
     init();
 });
@@ -215,7 +216,7 @@ function screenTransition(ui_out, ui_in, time){
 
 function nextPicture(){
     let currentAngle = toDegrees(ui_layout.object3D.rotation.y);
-    let nextPicAng = 360/num_imgs + currentAngle;
+    let nextPicAng = currentAngle - 360/num_imgs;
     let tween_next = new AFRAME.TWEEN.Tween(ui_layout.object3D.rotation).to({y:toRadians(nextPicAng)}, trans_lapse/2);
     tween_next.easing(TWEEN.Easing.Cubic.Out);
     tween_next.start();
@@ -223,7 +224,7 @@ function nextPicture(){
 
 function prevPicture(){
     let currentAngle = toDegrees(ui_layout.object3D.rotation.y);
-    let nextPicAng = currentAngle - 360/num_imgs;
+    let nextPicAng = 360/num_imgs + currentAngle;
     let tween_prev = new AFRAME.TWEEN.Tween(ui_layout.object3D.rotation).to({y:toRadians(nextPicAng)}, trans_lapse/2);
     tween_prev.easing(TWEEN.Easing.Cubic.Out);
     tween_prev.start();
