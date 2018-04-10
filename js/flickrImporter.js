@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
         createUI();
-        deviceDetection();
+        //deviceDetection();
     });
     init();
 });
@@ -56,7 +56,8 @@ function transferFailed(evt) {
     console.log('Unable to get the pictures :( -> sad panda');
   }  
 
-function createImages(cant){
+
+  function createImages(cant){
     for(i = 0; i < cant; i++){
         let picUrl = picNum => `https://img.gs/khtbpxltql/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
         let img = document.createElement('a-image');
@@ -64,6 +65,8 @@ function createImages(cant){
         img.setAttribute('width', 4);
         img.setAttribute('height', 3);
         img.setAttribute('position', `${-10 + img_w * i } 2 -5`);
+        img.setAttribute('class', 'sel-img');
+        //img.addEventListener('click', `console.log(climg);`);
         ui_layout.appendChild(img);
     }
 }
@@ -134,6 +137,7 @@ function createSelectUI(){
     // splash screen
     let browse_ui = document.createElement('a-entity');
     browse_ui.setAttribute('id', 'browse');
+
 
     return browse_ui;    
 }
