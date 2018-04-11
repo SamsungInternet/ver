@@ -16,7 +16,6 @@ let ui_select = null;
 let ui_browse = null;
 let rot_anim = null;
 
-
 document.addEventListener('DOMContentLoaded', function() {    
     //creates the layout entity once the scene is loaded
     document.querySelector('a-scene').addEventListener('loaded', function() {
@@ -39,7 +38,7 @@ function reqListener(){
     img_src = JSON.parse(this.responseText);
     console.log(img_src);
     createImages(num_imgs);
-    layout.object3D.rotateY(toRadians(180));
+    layout.object3D.rotateY(toRadians(90));
 
     goToSplash();
 }
@@ -65,10 +64,13 @@ function transferFailed(evt) {
         img.setAttribute('width', 4);
         img.setAttribute('height', 3);
         img.setAttribute('position', `${-10 + img_w * i } 2 -5`);
-        img.setAttribute('class', 'sel-img');
-        //img.addEventListener('click', `console.log(climg);`);
+        img.setAttribute('class', 'cpollidable');
         ui_layout.appendChild(img);
     }
+}
+
+function climg(){
+    console.log('climg');
 }
 
 /* UI setup */
@@ -117,7 +119,7 @@ function createBrowseUI(){
     prev.setAttribute('transparent', 'true');
     prev.setAttribute('height', .6);
     prev.setAttribute('width', .6);
-    prev.setAttribute('position', '-2 1.2 -2.8');
+    prev.setAttribute('position', '-1 1.2 -2.8');
     prev.setAttribute('class', 'collidable');
     prev.setAttribute('onClick', 'nextPicture()');
     let next = document.createElement('a-image');
@@ -125,21 +127,33 @@ function createBrowseUI(){
     next.setAttribute('transparent', 'true');
     next.setAttribute('height', .6);
     next.setAttribute('width', .6);
-    next.setAttribute('position', '2 1.2 -2.8');
+    next.setAttribute('position', '1 1.2 -2.8');
     next.setAttribute('class', 'collidable');
     next.setAttribute('onClick', 'prevPicture()');
     browse_ui.appendChild(prev);
+    let info = document.createElement('a-image');
+    info.setAttribute('src', '#info');
+    info.setAttribute('transparent', 'true');
+    info.setAttribute('height', .6);
+    info.setAttribute('width', .6);
+    info.setAttribute('position', '0 1.2 -2.5');
+    info.setAttribute('class', 'collidable');
+    info.setAttribute('onClick', 'prevPicture()');
+    browse_ui.appendChild(prev);
     browse_ui.appendChild(next);
+    browse_ui.appendChild(info);
     return browse_ui;    
 }
 
 function createSelectUI(){
-    // splash screen
-    let browse_ui = document.createElement('a-entity');
-    browse_ui.setAttribute('id', 'browse');
-
-
-    return browse_ui;    
+    // select screen (information display per picture)
+    let select_ui = document.createElement('a-entity');
+    select_ui.setAttribute('id', 'select');
+    let lbl_title = document.createElement('a-entity');
+    lbl_title.setAttribute('text', 'value:This is a title');
+    lbl_title.setAttribute('position', '0 2.4 -2');
+    select_ui.appendChild(lbl_title);
+    return select_ui;    
 }
 
 function createOverviewUI(){
@@ -189,15 +203,18 @@ function scaleTo(obj, scl, time){
 }
 
 function goToBrowse(){
+    document.querySelector('[cursor]').setAttribute('raycaster', 'objects:.collidable');
     document.querySelector('a-scene').appendChild(ui_browse);
     layout.rotate.stop();
-    layout.object3D.rotation.set(toRadians(0), toRadians(180/num_imgs), toRadians(0), 'XYZ');
+    layout.object3D.rotation.set(toRadians(0), toRadians(90), toRadians(0), 'XYZ'); // this is to center the UI in the picture
     layout.setCircle(35);
     moveTo(ui_layout, {x:0, y:0, z:32.1}, 2000);
     screenTransition(ui_overview, ui_browse, 500);
+    screenTransition(ui_select, ui_browse, 500);
 }
 
 function goToOverview(){
+    document.querySelector('[cursor]').setAttribute('raycaster', 'objects:.collidable');
     moveTo(ui_overview, {x:0, y:50, z:0}, 0);
     document.querySelector('a-scene').appendChild(ui_overview);
     layout.rotate.start();
@@ -209,6 +226,12 @@ function goToSplash(){
     document.querySelector('a-scene').appendChild(ui_splash);
     layout.setCircle(circ_rad_splash);
     layout.rotate.start();
+}
+
+function goToSelect(){
+    screenTransition(ui_browse, ui_select, 500);
+    document.querySelector('[cursor]').setAttribute('raycaster', 'objects:climg');
+    document.querySelector('a-scene').appendChild(ui_select);
 }
 
 function screenTransition(ui_out, ui_in, time){
@@ -247,7 +270,7 @@ function createImageLayout(){
         let ang = 360/num_imgs;
         for(i = 0; i < num_imgs; i++){
             //rotation: imgs[i].object3D.rotateY(toRadians(180-(90-ang * -i)));
-            let tween_rot = new AFRAME.TWEEN.Tween(imgs[i].object3D.rotation).to({y:toRadians(180-(90-ang * -i))}, trans_lapse);
+            let tween_rot = new AFRAME.TWEEN.Tween(imgs[i].object3D.rotation).to({y:toRadians(-(90-ang * -i))}, trans_lapse*2);
             tween_rot.easing(TWEEN.Easing.Cubic.Out);
             tween_rot.start();
             //position: imgs[i].object3D.position.set(circ_rad * Math.cos(toRadians(ang * i)), 2, circ_rad * Math.sin(toRadians(ang * i)));
