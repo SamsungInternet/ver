@@ -119,7 +119,7 @@ function createBrowseUI(){
     prev.setAttribute('transparent', 'true');
     prev.setAttribute('height', .6);
     prev.setAttribute('width', .6);
-    prev.setAttribute('position', '-1 1.2 -2.8');
+    prev.setAttribute('position', '-1 2.5 -2.8');
     prev.setAttribute('class', 'collidable');
     prev.setAttribute('onClick', 'nextPicture()');
     let next = document.createElement('a-image');
@@ -127,7 +127,7 @@ function createBrowseUI(){
     next.setAttribute('transparent', 'true');
     next.setAttribute('height', .6);
     next.setAttribute('width', .6);
-    next.setAttribute('position', '1 1.2 -2.8');
+    next.setAttribute('position', '1 2.5 -2.8');
     next.setAttribute('class', 'collidable');
     next.setAttribute('onClick', 'prevPicture()');
     browse_ui.appendChild(prev);
@@ -136,7 +136,7 @@ function createBrowseUI(){
     info.setAttribute('transparent', 'true');
     info.setAttribute('height', .6);
     info.setAttribute('width', .6);
-    info.setAttribute('position', '0 1.2 -2.5');
+    info.setAttribute('position', '0 2.5 -2.5');
     info.setAttribute('class', 'collidable');
     info.setAttribute('onClick', 'prevPicture()');
     browse_ui.appendChild(prev);
@@ -208,7 +208,7 @@ function goToBrowse(){
     layout.rotate.stop();
     layout.object3D.rotation.set(toRadians(0), toRadians(90), toRadians(0), 'XYZ'); // this is to center the UI in the picture
     layout.setCircle(35);
-    moveTo(ui_layout, {x:0, y:0, z:32.1}, 2000);
+    moveTo(ui_layout, {x:0, y:-0.5, z:32.1}, 2000);
     screenTransition(ui_overview, ui_browse, 500);
     screenTransition(ui_select, ui_browse, 500);
 }
@@ -232,6 +232,7 @@ function goToSelect(){
     screenTransition(ui_browse, ui_select, 500);
     document.querySelector('[cursor]').setAttribute('raycaster', 'objects:climg');
     document.querySelector('a-scene').appendChild(ui_select);
+    console.log(document.querySelector('[cursor]').components.raycaster);
 }
 
 function screenTransition(ui_out, ui_in, time){
@@ -242,6 +243,7 @@ function screenTransition(ui_out, ui_in, time){
 }
 
 function nextPicture(){
+    console.log('perro');
     let currentAngle = toDegrees(ui_layout.object3D.rotation.y);
     let nextPicAng = currentAngle - 360/num_imgs;
     let tween_next = new AFRAME.TWEEN.Tween(ui_layout.object3D.rotation).to({y:toRadians(nextPicAng)}, trans_lapse/2);
