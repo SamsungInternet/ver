@@ -1,4 +1,5 @@
 const key = '039bfc7fc798caf5612be3fb9a6094b0';
+const imggs_trial_key = 'bqhmgwwzzp';
 let flickr_url = 'https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=' + key + '&format=json&nojsoncallback=1';
 let img_src = null;
 let img_w = 4.5;
@@ -15,6 +16,7 @@ let ui_layout = null;
 let ui_select = null;
 let ui_browse = null;
 let rot_anim = null;
+let state = 0; //splash/overview/browse
 
 document.addEventListener('DOMContentLoaded', function() {    
     //creates the layout entity once the scene is loaded
@@ -58,13 +60,13 @@ function transferFailed(evt) {
 
   function createImages(cant){
     for(i = 0; i < cant; i++){
-        let picUrl = picNum => `https://img.gs/khtbpxltql/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
+        let picUrl = picNum => `https://img.gs/${imggs_trial_key}/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
         let img = document.createElement('a-image');
         img.setAttribute('src', picUrl(i));
         img.setAttribute('width', 4);
         img.setAttribute('height', 3);
         img.setAttribute('position', `${-10 + img_w * i } 2 -5`);
-        img.setAttribute('class', 'cpollidable');
+        img.setAttribute('class', 'image_itm');
         ui_layout.appendChild(img);
     }
 }
@@ -119,7 +121,7 @@ function createBrowseUI(){
     prev.setAttribute('transparent', 'true');
     prev.setAttribute('height', .6);
     prev.setAttribute('width', .6);
-    prev.setAttribute('position', '-1 2.5 -2.8');
+    prev.setAttribute('position', '-1 1.5 -2.8');
     prev.setAttribute('class', 'collidable');
     prev.setAttribute('onClick', 'nextPicture()');
     let next = document.createElement('a-image');
@@ -127,21 +129,21 @@ function createBrowseUI(){
     next.setAttribute('transparent', 'true');
     next.setAttribute('height', .6);
     next.setAttribute('width', .6);
-    next.setAttribute('position', '1 2.5 -2.8');
+    next.setAttribute('position', '1 1.5 -2.8');
     next.setAttribute('class', 'collidable');
     next.setAttribute('onClick', 'prevPicture()');
     browse_ui.appendChild(prev);
-    let info = document.createElement('a-image');
-    info.setAttribute('src', '#info');
-    info.setAttribute('transparent', 'true');
-    info.setAttribute('height', .6);
-    info.setAttribute('width', .6);
-    info.setAttribute('position', '0 2.5 -2.5');
-    info.setAttribute('class', 'collidable');
-    info.setAttribute('onClick', 'prevPicture()');
+    let back = document.createElement('a-image');
+    back.setAttribute('src', '#back');
+    back.setAttribute('transparent', 'true');
+    back.setAttribute('height', .6);
+    back.setAttribute('width', .6);
+    back.setAttribute('position', '0 .5 -2.5');
+    back.setAttribute('class', 'collidable');
+    back.setAttribute('onClick', 'goBack()');
     browse_ui.appendChild(prev);
     browse_ui.appendChild(next);
-    browse_ui.appendChild(info);
+    browse_ui.appendChild(back);
     return browse_ui;    
 }
 
@@ -202,37 +204,50 @@ function scaleTo(obj, scl, time){
     tween_scl.start();
 }
 
+function goBack(){
+    switch(state){
+        case 2:
+            goToOverview(); 
+        break;
+        case 1: 
+            goToSplash();
+        break;
+    }
+}
+
 function goToBrowse(){
     document.querySelector('[cursor]').setAttribute('raycaster', 'objects:.collidable');
     document.querySelector('a-scene').appendChild(ui_browse);
     layout.rotate.stop();
     layout.object3D.rotation.set(toRadians(0), toRadians(90), toRadians(0), 'XYZ'); // this is to center the UI in the picture
     layout.setCircle(35);
-    moveTo(ui_layout, {x:0, y:-0.5, z:32.1}, 2000);
+    moveTo(ui_layout, {x:0, y:0.5, z:32.1}, 2000);
     screenTransition(ui_overview, ui_browse, 500);
     screenTransition(ui_select, ui_browse, 500);
+    state = 2;
 }
 
 function goToOverview(){
     document.querySelector('[cursor]').setAttribute('raycaster', 'objects:.collidable');
-    moveTo(ui_overview, {x:0, y:50, z:0}, 0);
     document.querySelector('a-scene').appendChild(ui_overview);
     layout.rotate.start();
     layout.setCircle(35);
     screenTransition(ui_splash, ui_overview, 500);
+    screenTransition(ui_browse, ui_overview, 500);
+    moveTo(layout, {x:0, y:0, z:0}, 0);
+    state = 1;
 }
 
 function goToSplash(){
     document.querySelector('a-scene').appendChild(ui_splash);
     layout.setCircle(circ_rad_splash);
     layout.rotate.start();
+    state = 0;
+    screenTransition(ui_overview, ui_splash, 500);
 }
 
 function goToSelect(){
     screenTransition(ui_browse, ui_select, 500);
-    document.querySelector('[cursor]').setAttribute('raycaster', 'objects:climg');
-    document.querySelector('a-scene').appendChild(ui_select);
-    console.log(document.querySelector('[cursor]').components.raycaster);
 }
 
 function screenTransition(ui_out, ui_in, time){
@@ -243,7 +258,6 @@ function screenTransition(ui_out, ui_in, time){
 }
 
 function nextPicture(){
-    console.log('perro');
     let currentAngle = toDegrees(ui_layout.object3D.rotation.y);
     let nextPicAng = currentAngle - 360/num_imgs;
     let tween_next = new AFRAME.TWEEN.Tween(ui_layout.object3D.rotation).to({y:toRadians(nextPicAng)}, trans_lapse/2);
