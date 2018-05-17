@@ -61,10 +61,7 @@ function transferFailed(evt) {
   function createImages(cant){
     for(i = 0; i < cant; i++){
 <<<<<<< HEAD
-        let picUrl = picNum => `https://img.gs/fkhzrwbvpz/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
-=======
         let picUrl = picNum => `https://img.gs/${imggs_trial_key}/1024x1024/https://farm${ img_src.photos.photo[picNum].farm }.staticflickr.com/${ img_src.photos.photo[picNum].server }/${ img_src.photos.photo[picNum].id}_${ img_src.photos.photo[picNum].secret }_b.jpg;`;
->>>>>>> dc25c7d44dfaf3d95f915e2dde031fba794beed2
         let img = document.createElement('a-image');
         img.setAttribute('src', picUrl(i));
         img.setAttribute('width', 4);
